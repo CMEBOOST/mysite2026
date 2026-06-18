@@ -17,8 +17,19 @@ Including another URLconf
 from django.urls import include
 from django.contrib import admin
 from django.urls import path
+from django.http import HttpResponse
+
+def info(request):
+    ip_address = request.META["REMOTE_ADDR"]
+    res = f'<h1>Your IP Address is : {ip_address}</h1>'
+    
+    for k,v in request.headers.items():
+        res += f'<p>{k}: {v}</p>'
+    return HttpResponse(res)
+
 
 urlpatterns = [
+    path('info/', info),
     path("admin/", admin.site.urls),
-    path("", include("blog.urls")),
+    # path("", include("blog.urls")),
 ]
